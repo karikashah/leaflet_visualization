@@ -13,9 +13,6 @@
         <!-- D3 JavaScript -->
         <script src="https://d3js.org/d3.v4.min.js"></script>
 
-        <!-- Leaflet-Choropleth JavaScript -->
-        <script type="text/javascript" src="static/js/choropleth.js"></script>
-
         <!-- Bootstrap CSS -->
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
             integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
@@ -25,10 +22,10 @@
     </head>
 
     <body>
-        <div class="container-fluid">
+        <!-- <div class="container-fluid"> -->
             <div class="jumbotron">
-                <h1 class="display-4">All Earthquake Data </h1>
-                <p class="lead">Interactive visualization of earthquakes all over the world (for last 7 days)</p>
+                <h1 class="text-center display-4">All Earthquake Data </h1>
+                <p class="text-center lead">Interactive visualization of earthquakes all over the world (for last 7 days)</p>
                 <hr class="my-4">
                 <p>Below is a visualization of all the earthquakes in the last seven days. Data was collected from the United
                 States Geological Survey(USGS). LeafletJS is used to plot the data. The data markers reflects the magnitude of the
@@ -36,10 +33,12 @@
                 earthquakes with higher magnitudes appears larger and darker in color. Popups provide additional information about the
                 earthquake when a marker is clicked.
                 A legend provides visual context of earthquake data.</p>
+
+                <!-- The div for the map -->
+                <div id="map-id"></div>
             </div>
-        </div>
-        <!-- The div for the map -->
-        <div id="map-id"></div>
+        <!-- </div> -->
+        
 
         <!-- Our JS -->
         <script type="text/javascript" src="static/js/logic.js"></script>

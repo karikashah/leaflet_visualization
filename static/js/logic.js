@@ -31,7 +31,7 @@ function createFeatures(earthquakeData) {
       return new L.circle(latlng, {
         radius: getRadius(feature.properties.mag),
         fillColor: getColor(feature.properties.mag),
-        fillOpacity: 0.6,
+        fillOpacity: 0.7,
         color: "#000",
         stroke: true,
         weight: 0.8
@@ -50,20 +50,17 @@ function createMap(earthquakes) {
   // ---------------------------------------------------
   var outdoors = L.tileLayer(
     "https://api.mapbox.com/styles/v1/mapbox/outdoors-v10/tiles/256/{z}/{x}/{y}?" +
-      "access_token=pk.eyJ1IjoidGJlcnRvbiIsImEiOiJjamRoanlkZXIwenp6MnFuOWVsbGo2cWhtIn0.zX40X0x50dpaN96rKQKarw." +
-      "T6YbdDixkOBWH_k9GbS8JQ"
+      "access_token=pk.eyJ1Ijoia2FyaWthc2hhaCIsImEiOiJjanRsaDByZHIwYmJzNDNvNjV2cGtpOXF5In0.GtjChE8Obsxn8eyc5ymC2A"
   );
 
   var satellite = L.tileLayer(
     "https://api.mapbox.com/styles/v1/mapbox/satellite-v9/tiles/256/{z}/{x}/{y}?" +
-      "access_token=pk.eyJ1IjoidGJlcnRvbiIsImEiOiJjamRoanlkZXIwenp6MnFuOWVsbGo2cWhtIn0.zX40X0x50dpaN96rKQKarw." +
-      "T6YbdDixkOBWH_k9GbS8JQ"
+      "access_token=pk.eyJ1Ijoia2FyaWthc2hhaCIsImEiOiJjanRsaDByZHIwYmJzNDNvNjV2cGtpOXF5In0.GtjChE8Obsxn8eyc5ymC2A"
   );
 
   var grayscale = L.tileLayer(
-    "https://api.mapbox.com/styles/v1/mapbox/dark-v9/tiles/256/{z}/{x}/{y}?" +
-      "access_token=pk.eyJ1IjoidGJlcnRvbiIsImEiOiJjamRoanlkZXIwenp6MnFuOWVsbGo2cWhtIn0.zX40X0x50dpaN96rKQKarw." +
-      "T6YbdDixkOBWH_k9GbS8JQ"
+    "https://api.mapbox.com/styles/v1/mapbox/light-v10/tiles/256/{z}/{x}/{y}?" +
+      "access_token=pk.eyJ1Ijoia2FyaWthc2hhaCIsImEiOiJjanRsaDByZHIwYmJzNDNvNjV2cGtpOXF5In0.GtjChE8Obsxn8eyc5ymC2A"
   );
 
   // Step 4b: Define a baseMaps object to hold base layers
@@ -84,7 +81,7 @@ function createMap(earthquakes) {
   // -------------------------------------------------
   var myMap = L.map("map-id", {
     center: [37.09, -95.71],
-    zoom: 5,
+    zoom: 2,
     layers: [satellite, earthquakes]
   });
 
@@ -98,40 +95,12 @@ function createMap(earthquakes) {
 
   // Step 4f: Set up the legend
   // ---------------------------
-  var legend = L.control({
-    position: "bottomright"
-  });
-  // legend.onAdd = function() {
-  //   var div = L.DomUtil.create("div", "info legend");
-  //   var limits = geojson.options.limits;
-  //   var colors = geojson.options.colors;
-  //   var labels = [];
+  var legend = L.control({ position: "bottomright" });
 
-  //   // Add min & max
-  //   var legendInfo =
-  //     "<h1>Median Income</h1>" +
-  //     '<div class="labels">' +
-  //     '<div class="min">' +
-  //     limits[0] +
-  //     "</div>" +
-  //     '<div class="max">' +
-  //     limits[limits.length - 1] +
-  //     "</div>" +
-  //     "</div>";
-
-  //   div.innerHTML = legendInfo;
-
-  //   limits.forEach(function(limit, index) {
-  //     labels.push('<li style="background-color: ' + colors[index] + '"></li>');
-  //   });
-
-  //   div.innerHTML += "<ul>" + labels.join("") + "</ul>";
-  //   return div;
-  // };
-
-  legend.onAdd = function(myMap) {
-    var div = L.DomUtil.create("div", "info legend");
-    var grades = [0, 1, 2, 3, 4, 5];
+  legend.onAdd = function(map) {
+    var div = L.DomUtil.create("div", "info legend"),
+      grades = [0, 1, 2, 3, 4, 5],
+      labels = [];
 
     // loop through our density intervals and generate a label with a colored square for each interval
     for (var i = 0; i < grades.length; i++) {
@@ -142,8 +111,10 @@ function createMap(earthquakes) {
         grades[i] +
         (grades[i + 1] ? "&ndash;" + grades[i + 1] + "<br>" : "+");
     }
+
     return div;
   };
+
   legend.addTo(myMap);
 }
 
@@ -151,19 +122,19 @@ function createMap(earthquakes) {
 // -----------------------------------------------------------------------------
 function getColor(d) {
   return d > 5
-    ? "#a54500"
+    ? "#800026"
     : d > 4
-    ? "#cc5500"
+    ? "#BD0026"
     : d > 3
-    ? "#ff6f08"
+    ? "#E31A1C"
     : d > 2
-    ? "#ff9143"
+    ? "#FD8D3C"
     : d > 1
-    ? "#ffb37e"
-    : "#ffcca5";
+    ? "#FED976"
+    : "#FFEDA0";
 }
 
 // Change the maginutde of the earthquake by a factor of 25,000 for the radius of the circle.
 function getRadius(value) {
-  return value * 25000;
+  return value * 55000;
 }
