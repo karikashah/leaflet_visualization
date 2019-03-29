@@ -1,11 +1,14 @@
-// Step 1: USGS earthquake URL
-// ============================
+// Step 1: Set USGS earthquake URL & tectonicPlates URL
+// ======================================================
 var earthquakeURL =
   "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson";
 
+var tectonicPlatesURL =
+  "https://raw.githubusercontent.com/fraxen/tectonicplates/master/GeoJSON/PB2002_boundaries.json";
+
 // Step 2: GET json object from earthquake URL
 // ============================================
-d3.json(earthquakeURL, function(response) {
+https: d3.json(earthquakeURL, function(response) {
   // Call function to create bindpopup & circle for each latitude & longitude obtained from response.features
   createFeatures(response.features);
 });
@@ -71,13 +74,18 @@ function createMap(earthquakes) {
     Outdoors: outdoors
   };
 
-  // Step 4c: Create overlay object to hold overlay layer
+  // Step 4c: Create a layer for the tectonic plates
+  // --------------------------------------------------
+  var tectonicPlates = new L.LayerGroup();
+
+  // Step 4d: Create overlay object to hold overlay layer
   // ----------------------------------------------------------
   var overlayMaps = {
-    Earthquakes: earthquakes
+    Earthquakes: earthquakes,
+    "Tectonic Plates": tectonicPlates
   };
 
-  // Step 4d: Create map & layers to display on load
+  // Step 4e: Create map & layers to display on load
   // -------------------------------------------------
   var myMap = L.map("map-id", {
     center: [37.09, -95.71],
@@ -85,7 +93,16 @@ function createMap(earthquakes) {
     layers: [satellite, earthquakes]
   });
 
-  // Step 4e: Add the layer control to the map
+  // Step 4f: Add Fault lines data
+  // -------------------------------
+  d3.json(tectonicPlatesURL, function(plateData) {
+    L.geoJson(plateData, {
+      color: "yellow",
+      weight: 2
+    }).addTo(tectonicPlates);
+  });
+
+  // Step 4g: Add the layer control to the map
   // ------------------------------------------
   L.control
     .layers(baseMaps, overlayMaps, {
@@ -93,9 +110,11 @@ function createMap(earthquakes) {
     })
     .addTo(myMap);
 
-  // Step 4f: Set up the legend
+  // Step 4h: Set up the legend
   // ---------------------------
-  var legend = L.control({ position: "bottomright" });
+  var legend = L.control({
+    position: "bottomright"
+  });
 
   legend.onAdd = function(map) {
     var div = L.DomUtil.create("div", "info legend"),
